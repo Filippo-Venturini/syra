@@ -1,3 +1,7 @@
+### Environment ###
+
+.env
+
 ### Kotlin ###
 # Compiled class file
 *.class
