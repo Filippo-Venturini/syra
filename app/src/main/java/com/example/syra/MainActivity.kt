@@ -18,60 +18,58 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val dotenv = dotenv()
+        val dotenv = dotenv {
+            directory = "/assets"
+            filename = "env"
+        }
 
-        val username = dotenv["MQTT_USERNAME"]
-        val password = dotenv["MQTT_PASSWORD"]
+        mqttManager = MqttManager(
+            context = this,
+            brokerUrl = dotenv["BROKER_URL"],
+            username = dotenv["MQTT_USERNAME"],
+            password = dotenv["MQTT_PASSWORD"]
+        )
 
-        Toast.makeText(this@MainActivity, username, Toast.LENGTH_SHORT).show()
+        mqttManager.connect (
+            callback = object : MqttCallback {
+                override fun connectionLost(cause: Throwable?) {
+                    runOnUiThread {
+                        Toast.makeText(this@MainActivity, "Connection lost!", Toast.LENGTH_SHORT).show()
+                    }
+                }
 
-//        mqttManager = MqttManager(
-//            context = this,
-//            brokerUrl = "",
-//            username = "",
-//            password = ""
-//        )
-//
-//        mqttManager.connect (
-//            callback = object : MqttCallback {
-//                override fun connectionLost(cause: Throwable?) {
-//                    runOnUiThread {
-//                        Toast.makeText(this@MainActivity, "Connection lost!", Toast.LENGTH_SHORT).show()
-//                    }
-//                }
-//
-//                override fun messageArrived(topic: String?, message: MqttMessage?) {
-//                    //Handle arriving messages
-//                }
-//
-//                override fun deliveryComplete(token: IMqttDeliveryToken?) {
-//                    runOnUiThread {
-//                        Toast.makeText(this@MainActivity, "Message sent!", Toast.LENGTH_SHORT).show()
-//                    }
-//                }
-//            },
-//            onSuccess = {
-//                Toast.makeText(this, "Connected to the broker", Toast.LENGTH_SHORT).show()
-//            },
-//            onError = { e ->
-//                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
-//            }
-//        )
-//
-//        val btnMqtt = findViewById<Button>(R.id.btnMQTT)
-//
-//        btnMqtt.setOnClickListener{
-//            mqttManager.publishMessage(
-//                topic = "my/test/topic",
-//                message = "Hello from Kotlin!",
-//                onSuccess = {
-//                    Toast.makeText(this, "Message published!", Toast.LENGTH_SHORT).show()
-//                },
-//                onError = { e ->
-//                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
-//                }
-//            )
-//        }
+                override fun messageArrived(topic: String?, message: MqttMessage?) {
+                    //Handle arriving messages
+                }
+
+                override fun deliveryComplete(token: IMqttDeliveryToken?) {
+                    runOnUiThread {
+                        Toast.makeText(this@MainActivity, "Message sent!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            },
+            onSuccess = {
+                Toast.makeText(this, "Connected to the broker", Toast.LENGTH_SHORT).show()
+            },
+            onError = { e ->
+                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+        )
+
+        val btnMqtt = findViewById<Button>(R.id.btnMQTT)
+
+        btnMqtt.setOnClickListener{
+            mqttManager.publishMessage(
+                topic = "my/test/topic",
+                message = "Hello from Kotlin!",
+                onSuccess = {
+                    Toast.makeText(this, "Message published!", Toast.LENGTH_SHORT).show()
+                },
+                onError = { e ->
+                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                }
+            )
+        }
     }
 
     override fun onDestroy() {
