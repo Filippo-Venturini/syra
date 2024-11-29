@@ -1,5 +1,7 @@
 [versions]
 agp = "8.7.2"
+dotenvKotlin = "6.4.1"
+dotenvKotlinVersion = "6.4.2"
 kotlin = "2.0.0"
 coreKtx = "1.15.0"
 junit = "4.13.2"
@@ -13,6 +15,8 @@ orgEclipsePahoClientMqttv3 = "1.2.5"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+dotenv-kotlin = { module = "io.github.cdimascio:dotenv-kotlin", version.ref = "dotenvKotlin" }
+dotenv-kotlin-v642 = { module = "io.github.cdimascio:dotenv-kotlin", version.ref = "dotenvKotlinVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

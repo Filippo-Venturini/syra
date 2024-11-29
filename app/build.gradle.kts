@@ -59,5 +59,6 @@ dependencies {
 
     implementation(libs.org.eclipse.paho.client.mqttv3)
     implementation(libs.org.eclipse.paho.android.service)
+    implementation(libs.dotenv.kotlin.v642)
 
 }
