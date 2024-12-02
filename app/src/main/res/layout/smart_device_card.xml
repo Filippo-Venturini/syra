@@ -16,7 +16,7 @@
             android:padding="16dp">
 
             <TextView
-                android:id="@+id/cardTitle"
+                android:id="@+id/smartDeviceName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Smart Device"
