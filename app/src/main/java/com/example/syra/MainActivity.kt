@@ -25,8 +25,22 @@ class MainActivity : ComponentActivity() {
 
         this.smartDevicesGridView = findViewById(R.id.smartDevicesGridView)
 
-        this.cardAdapter = CardAdapter(this, listOf("device1", "device2"))
+        this.cardAdapter = CardAdapter(this, listOf("Bedroom Device 1", "Bedroom Device 2"))
         this.smartDevicesGridView.adapter = this.cardAdapter
+
+        val btnBedroom = findViewById<Button>(R.id.btnBedroom)
+        val btnLivingRoom = findViewById<Button>(R.id.btnLivingRoom)
+        val btnBathroom = findViewById<Button>(R.id.btnBathroom)
+
+        btnBedroom.setOnClickListener {
+            this.cardAdapter.updateDevices(listOf("Bedroom Device 1", "Bedroom Device 2"))
+        }
+        btnLivingRoom.setOnClickListener {
+            this.cardAdapter.updateDevices(listOf("Living Room Device 1", "Living Room Device 2"))
+        }
+        btnBathroom.setOnClickListener {
+            this.cardAdapter.updateDevices(listOf("Bathroom Device 1", "Bathroom Device 2"))
+        }
 
         this.connectToMqttBroker()
 

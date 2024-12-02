@@ -10,7 +10,7 @@ import com.example.syra.R
 
 class CardAdapter (
     private val context: Context,
-    private val devicesNames : List<String>)
+    private var devicesNames : List<String>)
     : BaseAdapter() {
 
     override fun getCount(): Int {
@@ -33,5 +33,10 @@ class CardAdapter (
         name.text = devicesNames[position]
 
         return view
+    }
+
+    fun updateDevices(newDevices: List<String>){
+        this.devicesNames = newDevices
+        notifyDataSetChanged()
     }
 }
