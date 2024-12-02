@@ -3,8 +3,11 @@ package com.example.syra
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.GridView
+import android.widget.ListView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import com.example.syra.adapter.CardAdapter
 import com.example.syra.service.MqttManager
 import io.github.cdimascio.dotenv.dotenv
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
@@ -13,11 +16,37 @@ import org.eclipse.paho.client.mqttv3.MqttMessage
 
 class MainActivity : ComponentActivity() {
     private lateinit var mqttManager: MqttManager
+    private lateinit var cardAdapter: CardAdapter
+    private lateinit var smartDevicesGridView: GridView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        this.smartDevicesGridView = findViewById(R.id.smartDevicesGridView)
+
+        this.cardAdapter = CardAdapter(this, listOf("device1", "device2"))
+        this.smartDevicesGridView.adapter = this.cardAdapter
+
+        this.connectToMqttBroker()
+
+        val btnMqtt = findViewById<Button>(R.id.btnMQTT)
+
+        btnMqtt.setOnClickListener{
+            mqttManager.publishMessage(
+                topic = "my/test/topic",
+                message = "Hello from Kotlin!",
+                onSuccess = {
+                    Toast.makeText(this, "Message published!", Toast.LENGTH_SHORT).show()
+                },
+                onError = { e ->
+                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                }
+            )
+        }
+    }
+
+    private fun connectToMqttBroker(){
         val dotenv = dotenv {
             directory = "/assets"
             filename = "env"
@@ -55,21 +84,6 @@ class MainActivity : ComponentActivity() {
                 Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
             }
         )
-
-        val btnMqtt = findViewById<Button>(R.id.btnMQTT)
-
-        btnMqtt.setOnClickListener{
-            mqttManager.publishMessage(
-                topic = "my/test/topic",
-                message = "Hello from Kotlin!",
-                onSuccess = {
-                    Toast.makeText(this, "Message published!", Toast.LENGTH_SHORT).show()
-                },
-                onError = { e ->
-                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
-                }
-            )
-        }
     }
 
     override fun onDestroy() {
