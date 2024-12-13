@@ -46,10 +46,11 @@ class MainActivity : ComponentActivity() {
 
         val btnMqtt = findViewById<Button>(R.id.btnMQTT)
 
+        //{"id":123, "src":"user_1", "method":"Switch.Set", "params":{"id":1,"on":false}}
         btnMqtt.setOnClickListener{
             mqttManager.publishMessage(
-                topic = "my/test/topic",
-                message = "Hello from Kotlin!",
+                topic = "shellyplus2pm-2cbcbb38e150/rpc",
+                message = "{\"id\":111, \"src\":\"user_1\", \"method\":\"Switch.Set\", \"params\":{\"id\":1,\"on\":true}}",
                 onSuccess = {
                     Toast.makeText(this, "Message published!", Toast.LENGTH_SHORT).show()
                 },
