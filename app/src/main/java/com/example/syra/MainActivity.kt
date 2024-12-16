@@ -1,14 +1,14 @@
 package com.example.syra
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.GridView
-import android.widget.ListView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import com.example.syra.adapter.CardAdapter
 import com.example.syra.service.MqttManager
+import com.example.syra.utils.Constants.SWITCH_0_ON
+import com.example.syra.utils.Constants.TOPIC
 import io.github.cdimascio.dotenv.dotenv
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
 import org.eclipse.paho.client.mqttv3.MqttCallback
@@ -49,8 +49,8 @@ class MainActivity : ComponentActivity() {
         //{"id":123, "src":"user_1", "method":"Switch.Set", "params":{"id":1,"on":false}}
         btnMqtt.setOnClickListener{
             mqttManager.publishMessage(
-                topic = "shellyplus2pm-2cbcbb38e150/rpc",
-                message = "{\"id\":111, \"src\":\"user_1\", \"method\":\"Switch.Set\", \"params\":{\"id\":1,\"on\":true}}",
+                topic = TOPIC,
+                command = SWITCH_0_ON,
                 onSuccess = {
                     Toast.makeText(this, "Message published!", Toast.LENGTH_SHORT).show()
                 },

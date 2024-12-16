@@ -1,6 +1,8 @@
 package com.example.syra.service
 
 import android.content.Context
+import com.example.syra.model.MqttCommand
+import com.google.gson.Gson
 import org.eclipse.paho.client.mqttv3.MqttCallback
 import org.eclipse.paho.client.mqttv3.MqttClient
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions
@@ -13,6 +15,8 @@ class MqttManager(private val context: Context,
                   private val password: String) {
 
     private lateinit var mqttClient: MqttClient
+
+    private val gson: Gson = Gson()
 
     fun connect(callback: MqttCallback? = null, onSuccess: (() -> Unit)? = null, onError: ((Exception) -> Unit)? = null) {
         try {
@@ -36,11 +40,12 @@ class MqttManager(private val context: Context,
         }
     }
 
-    fun publishMessage(topic: String, message: String, qos: Int = 1, onSuccess: (() -> Unit)? = null, onError: ((Exception) -> Unit)? = null) {
+    fun publishMessage(topic: String, command: MqttCommand, qos: Int = 1, onSuccess: (() -> Unit)? = null, onError: ((Exception) -> Unit)? = null) {
         if (::mqttClient.isInitialized && mqttClient.isConnected) {
             try {
                 val mqttMessage = MqttMessage().apply {
-                    payload = message.toByteArray()
+                    val jsonCommand : String = gson.toJson(command)
+                    payload = jsonCommand.toByteArray()
                     this.qos = qos
                 }
                 mqttClient.publish(topic, mqttMessage)

@@ -61,6 +61,5 @@ dependencies {
     implementation(libs.org.eclipse.paho.android.service)
     implementation(libs.dotenv.kotlin.v642)
     implementation(libs.androidx.material)
-
-
+    implementation(libs.gson)
 }
