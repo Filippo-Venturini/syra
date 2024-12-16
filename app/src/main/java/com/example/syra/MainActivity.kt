@@ -1,12 +1,15 @@
 package com.example.syra
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.MotionEvent
 import android.widget.Button
 import android.widget.GridView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import com.example.syra.adapter.CardAdapter
 import com.example.syra.service.MqttManager
+import com.example.syra.utils.Constants.SWITCH_0_OFF
 import com.example.syra.utils.Constants.SWITCH_0_ON
 import com.example.syra.utils.Constants.TOPIC
 import io.github.cdimascio.dotenv.dotenv
@@ -19,6 +22,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var cardAdapter: CardAdapter
     private lateinit var smartDevicesGridView: GridView
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -47,18 +51,41 @@ class MainActivity : ComponentActivity() {
         val btnMqtt = findViewById<Button>(R.id.btnMQTT)
 
         //{"id":123, "src":"user_1", "method":"Switch.Set", "params":{"id":1,"on":false}}
-        btnMqtt.setOnClickListener{
-            mqttManager.publishMessage(
-                topic = TOPIC,
-                command = SWITCH_0_ON,
-                onSuccess = {
-                    Toast.makeText(this, "Message published!", Toast.LENGTH_SHORT).show()
-                },
-                onError = { e ->
-                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+        btnMqtt.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    mqttManager.publishMessage(
+                        topic = TOPIC,
+                        command = SWITCH_0_ON,
+                        onSuccess = {
+                            Toast.makeText(this, "Message sent on press!", Toast.LENGTH_SHORT).show()
+                        },
+                        onError = { e ->
+                            Toast.makeText(this, "Error on press: ${e.message}", Toast.LENGTH_LONG).show()
+                        }
+                    )
+                    true
                 }
-            )
+
+                MotionEvent.ACTION_UP -> {
+                    mqttManager.publishMessage(
+                        topic = TOPIC,
+                        command = SWITCH_0_OFF,
+                        onSuccess = {
+                            Toast.makeText(this, "Message sent on release!", Toast.LENGTH_SHORT).show()
+                        },
+                        onError = { e ->
+                            Toast.makeText(this, "Error on release: ${e.message}", Toast.LENGTH_LONG).show()
+                        }
+                    )
+                    true
+                }
+
+                else -> false
+            }
         }
+
+
     }
 
     private fun connectToMqttBroker(){
@@ -87,10 +114,8 @@ class MainActivity : ComponentActivity() {
                 }
 
                 override fun deliveryComplete(token: IMqttDeliveryToken?) {
-                    runOnUiThread {
-                        Toast.makeText(this@MainActivity, "Message sent!", Toast.LENGTH_SHORT).show()
-                    }
                 }
+
             },
             onSuccess = {
                 Toast.makeText(this, "Connected to the broker", Toast.LENGTH_SHORT).show()
