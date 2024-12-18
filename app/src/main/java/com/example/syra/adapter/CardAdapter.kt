@@ -1,17 +1,20 @@
 package com.example.syra.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Button
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
 import com.example.syra.DeviceActionListener
 import com.example.syra.R
 import com.example.syra.model.Device
-import com.example.syra.viewholder.DeviceViewHolder
+import com.example.syra.utils.Constants.SWITCH_0_OFF
+import com.example.syra.utils.Constants.SWITCH_0_ON
+import com.example.syra.utils.Constants.TOPIC
 
 class CardAdapter (
     private val context: Context,
@@ -24,6 +27,7 @@ class CardAdapter (
 
     override fun getItemId(position: Int): Long = position.toLong()
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: View = convertView ?: LayoutInflater.from(parent?.context).inflate(R.layout.smart_device_card, parent, false)
 
@@ -34,12 +38,36 @@ class CardAdapter (
 
         name.text = device.name
 
-        btnUp.setOnClickListener {
-            deviceActionListener.onUpClicked(device)
+        btnUp.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    deviceActionListener.onUpPressed(device)
+                    true
+                }
+
+                MotionEvent.ACTION_UP -> {
+                    deviceActionListener.onUpReleased(device)
+                    true
+                }
+
+                else -> false
+            }
         }
 
-        btnDown.setOnClickListener {
-            deviceActionListener.onDownClicked(device)
+        btnDown.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    deviceActionListener.onDownPressed(device)
+                    true
+                }
+
+                MotionEvent.ACTION_UP -> {
+                    deviceActionListener.onDownReleased(device)
+                    true
+                }
+
+                else -> false
+            }
         }
 
         return view

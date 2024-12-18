@@ -1,7 +1,10 @@
-package com.example.syra.service
+package com.example.syra.repository
 
 import android.content.Context
 import com.example.syra.model.MqttCommand
+import com.example.syra.utils.Constants.BROKER_URL
+import com.example.syra.utils.Constants.MQTT_PASSWORD
+import com.example.syra.utils.Constants.MQTT_USERNAME
 import com.google.gson.Gson
 import org.eclipse.paho.client.mqttv3.MqttCallback
 import org.eclipse.paho.client.mqttv3.MqttClient
@@ -9,12 +12,13 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions
 import org.eclipse.paho.client.mqttv3.MqttException
 import org.eclipse.paho.client.mqttv3.MqttMessage
 
-class MqttManager(private val context: Context,
-                  private val brokerUrl: String,
-                  private val username: String,
-                  private val password: String) {
+class MqttRepository {
 
     private lateinit var mqttClient: MqttClient
+
+    private val brokerUrl: String = BROKER_URL
+    private val username: String = MQTT_USERNAME
+    private val password: String = MQTT_PASSWORD
 
     private val gson: Gson = Gson()
 
@@ -25,7 +29,7 @@ class MqttManager(private val context: Context,
             val options = MqttConnectOptions().apply {
                 isCleanSession = true
                 userName = username
-                password = this@MqttManager.password.toCharArray()
+                password = this@MqttRepository.password.toCharArray()
             }
 
             if (callback != null) {

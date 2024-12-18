@@ -11,7 +11,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.syra.adapter.CardAdapter
 import com.example.syra.model.Device
 import com.example.syra.viewmodel.DeviceViewModel
-import com.example.syra.service.MqttManager
+import com.example.syra.repository.MqttRepository
+import com.example.syra.utils.Constants.BROKER_URL
+import com.example.syra.utils.Constants.MQTT_PASSWORD
+import com.example.syra.utils.Constants.MQTT_USERNAME
 import com.example.syra.utils.Constants.SWITCH_0_OFF
 import com.example.syra.utils.Constants.SWITCH_0_ON
 import com.example.syra.utils.Constants.TOPIC
@@ -21,7 +24,7 @@ import org.eclipse.paho.client.mqttv3.MqttCallback
 import org.eclipse.paho.client.mqttv3.MqttMessage
 
 class MainActivity : ComponentActivity(), DeviceActionListener{
-    private lateinit var mqttManager: MqttManager
+    private val mqttRepository: MqttRepository = MqttRepository()
     private lateinit var cardAdapter: CardAdapter
     private lateinit var smartDevicesGridView: GridView
     private lateinit var viewModel: DeviceViewModel
@@ -42,9 +45,9 @@ class MainActivity : ComponentActivity(), DeviceActionListener{
         val btnLivingRoom = findViewById<Button>(R.id.btnLivingRoom)
         val btnBathroom = findViewById<Button>(R.id.btnBathroom)
 
-        viewModel.currentDeviceList.observe(this, { devices ->
+        viewModel.currentDeviceList.observe(this) { devices ->
             cardAdapter.updateDevices(devices)
-        })
+        }
 
         btnBedroom.setOnClickListener {
             this.viewModel.loadBedroomDevices()
@@ -56,88 +59,12 @@ class MainActivity : ComponentActivity(), DeviceActionListener{
             //this.cardAdapter.updateDevices(listOf("Bathroom Device 1", "Bathroom Device 2"))
         }
 
-        this.connectToMqttBroker()
-
-        val btnMqtt = findViewById<Button>(R.id.btnMQTT)
-
-        btnMqtt.setOnTouchListener { _, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    mqttManager.publishMessage(
-                        topic = TOPIC,
-                        command = SWITCH_0_ON,
-                        onSuccess = {
-                            Toast.makeText(this, "Message sent on press!", Toast.LENGTH_SHORT).show()
-                        },
-                        onError = { e ->
-                            Toast.makeText(this, "Error on press: ${e.message}", Toast.LENGTH_LONG).show()
-                        }
-                    )
-                    true
-                }
-
-                MotionEvent.ACTION_UP -> {
-                    mqttManager.publishMessage(
-                        topic = TOPIC,
-                        command = SWITCH_0_OFF,
-                        onSuccess = {
-                            Toast.makeText(this, "Message sent on release!", Toast.LENGTH_SHORT).show()
-                        },
-                        onError = { e ->
-                            Toast.makeText(this, "Error on release: ${e.message}", Toast.LENGTH_LONG).show()
-                        }
-                    )
-                    true
-                }
-
-                else -> false
-            }
-        }
-
-
-    }
-
-    private fun connectToMqttBroker(){
-        val dotenv = dotenv {
-            directory = "/assets"
-            filename = "env"
-        }
-
-        mqttManager = MqttManager(
-            context = this,
-            brokerUrl = dotenv["BROKER_URL"],
-            username = dotenv["MQTT_USERNAME"],
-            password = dotenv["MQTT_PASSWORD"]
-        )
-
-        mqttManager.connect (
-            callback = object : MqttCallback {
-                override fun connectionLost(cause: Throwable?) {
-                    runOnUiThread {
-                        Toast.makeText(this@MainActivity, "Connection lost!", Toast.LENGTH_SHORT).show()
-                    }
-                }
-
-                override fun messageArrived(topic: String?, message: MqttMessage?) {
-
-                }
-
-                override fun deliveryComplete(token: IMqttDeliveryToken?) {
-                }
-
-            },
-            onSuccess = {
-                Toast.makeText(this, "Connected to the broker", Toast.LENGTH_SHORT).show()
-            },
-            onError = { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
-            }
-        )
+        viewModel.connectToMqttBroker()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mqttManager.disconnect(
+        mqttRepository.disconnect(
             onSuccess = {
                 Toast.makeText(this, "Disconnected from the broker!", Toast.LENGTH_SHORT).show()
             },
@@ -147,11 +74,19 @@ class MainActivity : ComponentActivity(), DeviceActionListener{
         )
     }
 
-    override fun onUpClicked(device: Device) {
-        Toast.makeText(this, "BTN1", Toast.LENGTH_LONG).show()
+    override fun onUpPressed(device: Device) {
+        viewModel.publishSwitch0On(device)
     }
 
-    override fun onDownClicked(device: Device) {
-        Toast.makeText(this, "BTN2", Toast.LENGTH_LONG).show()
+    override fun onUpReleased(device: Device) {
+        viewModel.publishSwitch0Off(device)
+    }
+
+    override fun onDownPressed(device: Device) {
+        viewModel.publishSwitch1On(device)
+    }
+
+    override fun onDownReleased(device: Device) {
+        viewModel.publishSwitch1Off(device)
     }
 }
