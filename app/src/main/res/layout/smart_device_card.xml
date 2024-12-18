@@ -7,11 +7,12 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/transparent_color">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="225dp"
-            android:layout_height="213dp"
+            android:layout_width="194dp"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="16dp">
 
