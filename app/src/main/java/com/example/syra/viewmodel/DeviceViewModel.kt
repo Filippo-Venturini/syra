@@ -1,8 +1,9 @@
-package com.example.syra.model
+package com.example.syra.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.syra.model.Device
 
 class DeviceViewModel : ViewModel() {
 

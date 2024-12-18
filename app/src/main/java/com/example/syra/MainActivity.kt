@@ -9,7 +9,8 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.syra.adapter.CardAdapter
-import com.example.syra.model.DeviceViewModel
+import com.example.syra.model.Device
+import com.example.syra.viewmodel.DeviceViewModel
 import com.example.syra.service.MqttManager
 import com.example.syra.utils.Constants.SWITCH_0_OFF
 import com.example.syra.utils.Constants.SWITCH_0_ON
@@ -19,7 +20,7 @@ import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
 import org.eclipse.paho.client.mqttv3.MqttCallback
 import org.eclipse.paho.client.mqttv3.MqttMessage
 
-class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity(), DeviceActionListener{
     private lateinit var mqttManager: MqttManager
     private lateinit var cardAdapter: CardAdapter
     private lateinit var smartDevicesGridView: GridView
@@ -34,7 +35,7 @@ class MainActivity : ComponentActivity() {
 
         this.smartDevicesGridView = findViewById(R.id.smartDevicesGridView)
 
-        this.cardAdapter = CardAdapter(this, listOf())
+        this.cardAdapter = CardAdapter(this, listOf(), this)
         this.smartDevicesGridView.adapter = this.cardAdapter
 
         val btnBedroom = findViewById<Button>(R.id.btnBedroom)
@@ -59,7 +60,6 @@ class MainActivity : ComponentActivity() {
 
         val btnMqtt = findViewById<Button>(R.id.btnMQTT)
 
-        //{"id":123, "src":"user_1", "method":"Switch.Set", "params":{"id":1,"on":false}}
         btnMqtt.setOnTouchListener { _, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -145,5 +145,13 @@ class MainActivity : ComponentActivity() {
                 Toast.makeText(this, "Disconnection error: ${e.message}", Toast.LENGTH_LONG).show()
             }
         )
+    }
+
+    override fun onUpClicked(device: Device) {
+        Toast.makeText(this, "BTN1", Toast.LENGTH_LONG).show()
+    }
+
+    override fun onDownClicked(device: Device) {
+        Toast.makeText(this, "BTN2", Toast.LENGTH_LONG).show()
     }
 }
