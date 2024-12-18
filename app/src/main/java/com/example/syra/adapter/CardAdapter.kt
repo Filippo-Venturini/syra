@@ -7,14 +7,15 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import com.example.syra.R
+import com.example.syra.model.Device
 
 class CardAdapter (
     private val context: Context,
-    private var devicesNames : List<String>)
+    private var devices : List<Device>)
     : BaseAdapter() {
 
     override fun getCount(): Int {
-        return devicesNames.size
+        return devices.size
     }
 
     override fun getItem(position: Int): Any {
@@ -30,13 +31,13 @@ class CardAdapter (
 
         val name: TextView = view.findViewById(R.id.smartDeviceName)
 
-        name.text = devicesNames[position]
+        name.text = devices[position].name
 
         return view
     }
 
-    fun updateDevices(newDevices: List<String>){
-        this.devicesNames = newDevices
+    fun updateDevices(newDevices: List<Device>){
+        this.devices = newDevices
         notifyDataSetChanged()
     }
 }
