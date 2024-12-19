@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.Syra" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:textColor">@color/white</item>
         <item name="colorPrimary">@color/green</item>
         <item name="colorPrimaryVariant">@color/green</item>
-        <item name="colorOnPrimary">@color/transparent_color</item>
+        <item name="colorOnPrimary">@color/semi_transparent_white</item>
         <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorPrimaryDark">@color/green</item>
     </style>
 </resources>

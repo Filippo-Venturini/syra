@@ -49,14 +49,25 @@ class MainActivity : ComponentActivity(), DeviceActionListener{
             cardAdapter.updateDevices(devices)
         }
 
+        btnBedroom.isSelected = true
+
         btnBedroom.setOnClickListener {
             this.viewModel.loadBedroomDevices()
+            btnBedroom.isSelected = true
+            btnLivingRoom.isSelected = false
+            btnBathroom.isSelected = false
         }
         btnLivingRoom.setOnClickListener {
             this.viewModel.loadLivingRoomDevices()
+            btnBedroom.isSelected = false
+            btnLivingRoom.isSelected = true
+            btnBathroom.isSelected = false
         }
         btnBathroom.setOnClickListener {
             //this.cardAdapter.updateDevices(listOf("Bathroom Device 1", "Bathroom Device 2"))
+            btnBedroom.isSelected = false
+            btnLivingRoom.isSelected = false
+            btnBathroom.isSelected = true
         }
 
         viewModel.connectToMqttBroker()

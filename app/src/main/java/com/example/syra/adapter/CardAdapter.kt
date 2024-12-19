@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import com.example.syra.DeviceActionListener
 import com.example.syra.R
@@ -33,8 +34,8 @@ class CardAdapter (
 
         val device = devices[position]
         val name = view.findViewById<TextView>(R.id.deviceName)
-        val btnUp = view.findViewById<Button>(R.id.btnUp)
-        val btnDown = view.findViewById<Button>(R.id.btnDown)
+        val btnUp = view.findViewById<ImageButton>(R.id.btnUp)
+        val btnDown = view.findViewById<ImageButton>(R.id.btnDown)
 
         name.text = device.name
 
@@ -57,6 +58,7 @@ class CardAdapter (
         btnDown.setOnTouchListener { _, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
+
                     deviceActionListener.onDownPressed(device)
                     true
                 }

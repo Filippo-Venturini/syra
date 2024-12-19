@@ -20,7 +20,8 @@
             android:id="@+id/btnBedroom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="?attr/colorOnPrimary"
+            android:background="@drawable/background_color_selector"
+            android:textColor="@drawable/text_color_selector"
             android:text="Bedroom" />
 
         <Button
@@ -28,7 +29,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:backgroundTint="?attr/colorOnPrimary"
+            android:background="@drawable/background_color_selector"
+            android:textColor="@drawable/text_color_selector"
             android:text="Living Room" />
 
         <Button
@@ -36,7 +38,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:backgroundTint="?attr/colorOnPrimary"
+            android:background="@drawable/background_color_selector"
+            android:textColor="@drawable/text_color_selector"
             android:text="Bathroom" />
     </LinearLayout>
 
@@ -44,16 +47,21 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="36dp"
+        android:background="@drawable/menu_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/navigation_menu" />
+        app:menu="@menu/navigation_menu"
+        />
 
     <GridView
         android:id="@+id/smartDevicesGridView"
-        android:layout_width="412dp"
-        android:layout_height="332dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="164dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:numColumns="2"/>
+        android:numColumns="2"
+        android:horizontalSpacing="10dp"
+        android:padding="10dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
