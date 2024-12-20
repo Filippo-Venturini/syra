@@ -6,43 +6,67 @@
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary">
 
-    <LinearLayout
-        android:id="@+id/buttonContainer"
-        android:layout_width="match_parent"
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="84dp"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
+        android:layout_marginTop="52dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/btnBedroom"
+        <LinearLayout
+            android:id="@+id/buttonContainer"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/background_color_selector"
-            android:textColor="@drawable/text_color_selector"
-            android:text="Bedroom" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="84dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btnLivingRoom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/background_color_selector"
-            android:textColor="@drawable/text_color_selector"
-            android:text="Living Room" />
+            <Button
+                android:id="@+id/btnBedroom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_color_selector"
+                android:padding="10dp"
+                android:text="Bedroom"
+                android:textAllCaps="false"
+                android:textColor="@drawable/text_color_selector" />
 
-        <Button
-            android:id="@+id/btnBathroom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/background_color_selector"
-            android:textColor="@drawable/text_color_selector"
-            android:text="Bathroom" />
-    </LinearLayout>
+            <Button
+                android:id="@+id/btnLivingRoom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/background_color_selector"
+                android:padding="10dp"
+                android:text="Living Room"
+                android:textAllCaps="false"
+                android:textColor="@drawable/text_color_selector" />
 
+            <Button
+                android:id="@+id/btnKitchen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/background_color_selector"
+                android:padding="10dp"
+                android:text="Kitchen"
+                android:textAllCaps="false"
+                android:textColor="@drawable/text_color_selector" />
+
+            <Button
+                android:id="@+id/btnStudy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/background_color_selector"
+                android:padding="10dp"
+                android:text="Study"
+                android:textAllCaps="false"
+                android:textColor="@drawable/text_color_selector" />
+        </LinearLayout>
+    </HorizontalScrollView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="wrap_content"
@@ -58,10 +82,22 @@
         android:id="@+id/smartDevicesGridView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="164dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:numColumns="2"
+        android:layout_marginTop="32dp"
         android:horizontalSpacing="10dp"
-        android:padding="10dp"/>
+        android:numColumns="2"
+        android:padding="10dp"
+        android:verticalSpacing="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Syra"
+        android:textSize="48sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

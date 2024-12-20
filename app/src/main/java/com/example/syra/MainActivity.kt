@@ -43,32 +43,21 @@ class MainActivity : ComponentActivity(), DeviceActionListener{
 
         val btnBedroom = findViewById<Button>(R.id.btnBedroom)
         val btnLivingRoom = findViewById<Button>(R.id.btnLivingRoom)
-        val btnBathroom = findViewById<Button>(R.id.btnBathroom)
+        val btnKitchen = findViewById<Button>(R.id.btnKitchen)
+        val btnStudy = findViewById<Button>(R.id.btnStudy)
 
         viewModel.currentDeviceList.observe(this) { devices ->
             cardAdapter.updateDevices(devices)
         }
 
+        val buttons: List<Button> = listOf(btnBedroom, btnKitchen, btnLivingRoom, btnStudy)
         btnBedroom.isSelected = true
 
-        btnBedroom.setOnClickListener {
-            this.viewModel.loadBedroomDevices()
-            btnBedroom.isSelected = true
-            btnLivingRoom.isSelected = false
-            btnBathroom.isSelected = false
-        }
-        btnLivingRoom.setOnClickListener {
-            this.viewModel.loadLivingRoomDevices()
-            btnBedroom.isSelected = false
-            btnLivingRoom.isSelected = true
-            btnBathroom.isSelected = false
-        }
-        btnBathroom.setOnClickListener {
-            //this.cardAdapter.updateDevices(listOf("Bathroom Device 1", "Bathroom Device 2"))
-            btnBedroom.isSelected = false
-            btnLivingRoom.isSelected = false
-            btnBathroom.isSelected = true
-        }
+        buttons.forEach { currentBtn -> currentBtn.setOnClickListener{
+            this.viewModel.loadRoomDevices(resources.getResourceEntryName(currentBtn.id))
+            currentBtn.isSelected = true
+            buttons.filter { otherBtn -> otherBtn.id != currentBtn.id}.forEach{ otherBtn -> otherBtn.isSelected = false }
+        } }
 
         viewModel.connectToMqttBroker()
     }

@@ -23,17 +23,22 @@ class DeviceViewModel : ViewModel() {
     private val mqttRepository: MqttRepository = MqttRepository()
     private val bedRoomDeviceList = listOf(Device("Bedroom Device 1", TOPIC), Device("Bedroom Device 2", TOPIC))
     private val livingRoomDeviceList = listOf(Device("Living Room Device 1", TOPIC), Device("Living Room Device 2", TOPIC))
+    private val kitchenDeviceList = listOf(Device("Kitchen Device 1", TOPIC), Device("Kitchen Device 2", TOPIC))
+    private val studyDeviceList = listOf(Device("Study Device 1", TOPIC), Device("Study Device 2", TOPIC), Device("Study Device 3", TOPIC), Device("Study Device 4", TOPIC))
+
 
     init {
-        loadBedroomDevices()
-    }
-
-    fun loadBedroomDevices(){
         _currentDeviceList.value = bedRoomDeviceList
     }
 
-    fun loadLivingRoomDevices(){
-        _currentDeviceList.value = livingRoomDeviceList
+    fun loadRoomDevices(btnRoomID: String) {
+        println(btnRoomID)
+        when(btnRoomID){
+            "btnLivingRoom" -> _currentDeviceList.value = livingRoomDeviceList
+            "btnKitchen" -> _currentDeviceList.value = kitchenDeviceList
+            "btnBedroom" -> _currentDeviceList.value = bedRoomDeviceList
+            "btnStudy" -> _currentDeviceList.value = studyDeviceList
+        }
     }
 
     fun connectToMqttBroker(){
