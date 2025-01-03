@@ -56,8 +56,9 @@ class MainActivity : ComponentActivity(), DeviceActionListener{
         viewModel.connectToMqttBroker()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onPause() {
+        super.onPause()
+        viewModel.switchAllOff()
         mqttRepository.disconnect(
             onSuccess = {
                 Toast.makeText(this, "Disconnected from the broker!", Toast.LENGTH_SHORT).show()
