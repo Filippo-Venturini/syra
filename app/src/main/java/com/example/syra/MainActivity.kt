@@ -2,26 +2,20 @@ package com.example.syra
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.MotionEvent
 import android.widget.Button
 import android.widget.GridView
+import android.widget.Switch
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.syra.adapter.CardAdapter
 import com.example.syra.model.Device
 import com.example.syra.viewmodel.DeviceViewModel
 import com.example.syra.repository.MqttRepository
-import com.example.syra.utils.Constants.BROKER_URL
-import com.example.syra.utils.Constants.MQTT_PASSWORD
-import com.example.syra.utils.Constants.MQTT_USERNAME
-import com.example.syra.utils.Constants.SWITCH_0_OFF
-import com.example.syra.utils.Constants.SWITCH_0_ON
-import com.example.syra.utils.Constants.TOPIC
-import io.github.cdimascio.dotenv.dotenv
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
-import org.eclipse.paho.client.mqttv3.MqttCallback
-import org.eclipse.paho.client.mqttv3.MqttMessage
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity(), DeviceActionListener{
     private val mqttRepository: MqttRepository = MqttRepository()
@@ -83,10 +77,32 @@ class MainActivity : ComponentActivity(), DeviceActionListener{
     }
 
     override fun onDownPressed(device: Device) {
-        viewModel.publishSwitch1On(device)
+        viewModel.publishSwitch1Off(device)
     }
 
     override fun onDownReleased(device: Device) {
         viewModel.publishSwitch1Off(device)
     }
+
+    override fun onAllUpPressed(device: Device, switchDevice: Switch) {
+        lifecycleScope.launch {
+            viewModel.publishSwitch0On(device)
+            switchDevice.isEnabled = false
+            delay(16000)
+            viewModel.publishSwitch0Off(device)
+            switchDevice.isEnabled = true
+        }
+    }
+
+    override fun onAllDownPressed(device: Device, switchDevice: Switch) {
+        lifecycleScope.launch {
+            viewModel.publishSwitch1On(device)
+            switchDevice.isEnabled = false
+            delay(16000)
+            viewModel.publishSwitch1Off(device)
+            switchDevice.isEnabled = true
+        }
+    }
+
+
 }

@@ -26,7 +26,6 @@ class DeviceViewModel : ViewModel() {
     private val kitchenDeviceList = listOf(Device("Kitchen Device 1", TOPIC), Device("Kitchen Device 2", TOPIC))
     private val studyDeviceList = listOf(Device("Study Device 1", TOPIC), Device("Study Device 2", TOPIC), Device("Study Device 3", TOPIC), Device("Study Device 4", TOPIC))
 
-
     init {
         _currentDeviceList.value = bedRoomDeviceList
     }

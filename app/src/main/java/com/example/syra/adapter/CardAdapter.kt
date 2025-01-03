@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.Switch
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import com.example.syra.DeviceActionListener
@@ -37,6 +38,7 @@ class CardAdapter (
         val name = view.findViewById<TextView>(R.id.deviceName)
         val btnUp = view.findViewById<ImageButton>(R.id.btnUp)
         val btnDown = view.findViewById<ImageButton>(R.id.btnDown)
+        val switchDevice = view.findViewById<Switch>(R.id.switchDevice)
         val card = view.findViewById<CardView>(R.id.cardView)
 
         name.text = device.name
@@ -70,6 +72,14 @@ class CardAdapter (
                 }
 
                 else -> false
+            }
+        }
+
+        switchDevice.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                deviceActionListener.onAllDownPressed(device, switchDevice)
+            } else {
+                deviceActionListener.onAllUpPressed(device, switchDevice)
             }
         }
 
