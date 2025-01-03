@@ -17,6 +17,19 @@
         android:background="@drawable/device_selector"
         android:focusable="true">
 
+        <ImageButton
+            android:id="@+id/btnUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/background_action_button"
+            android:contentDescription="Up arrow"
+            android:gravity="center"
+            android:src="@drawable/up_arrow_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/deviceName" />
+
         <TextView
             android:id="@+id/deviceName"
             android:layout_width="wrap_content"
@@ -36,28 +49,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginTop="15dp"
             android:background="@drawable/background_action_button"
-            android:padding="10dp"
-            android:src="@drawable/down_arrow"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:src="@drawable/down_arrow_icon"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnUp" />
+            app:layout_constraintTop_toBottomOf="@+id/btnStop" />
 
         <ImageButton
-            android:id="@+id/btnUp"
+            android:id="@+id/btnStop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="56dp"
+            android:layout_marginTop="15dp"
             android:background="@drawable/background_action_button"
-            android:contentDescription="Up arrow"
+            android:contentDescription="stop icon"
             android:gravity="center"
-            android:padding="10dp"
-            android:src="@drawable/up_arrow"
+            android:src="@drawable/stop_icon"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/btnUp" />
 
         <ImageView
             android:id="@+id/deviceImage"
@@ -67,15 +76,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:srcCompat="@tools:sample/avatars" />
-
-        <Switch
-            android:id="@+id/switchDevice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="52dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toEndOf="@+id/btnUp"
-            app:layout_constraintTop_toBottomOf="@+id/deviceName" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

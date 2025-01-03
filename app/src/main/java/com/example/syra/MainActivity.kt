@@ -69,40 +69,17 @@ class MainActivity : ComponentActivity(), DeviceActionListener{
     }
 
     override fun onUpPressed(device: Device) {
+        viewModel.publishSwitch1Off(device)
         viewModel.publishSwitch0On(device)
     }
 
-    override fun onUpReleased(device: Device) {
-        viewModel.publishSwitch0Off(device)
-    }
-
     override fun onDownPressed(device: Device) {
+        viewModel.publishSwitch0Off(device)
+        viewModel.publishSwitch1On(device)
+    }
+
+    override fun onStopPressed(device: Device) {
+        viewModel.publishSwitch0Off(device)
         viewModel.publishSwitch1Off(device)
     }
-
-    override fun onDownReleased(device: Device) {
-        viewModel.publishSwitch1Off(device)
-    }
-
-    override fun onAllUpPressed(device: Device, switchDevice: Switch) {
-        lifecycleScope.launch {
-            viewModel.publishSwitch0On(device)
-            switchDevice.isEnabled = false
-            delay(16000)
-            viewModel.publishSwitch0Off(device)
-            switchDevice.isEnabled = true
-        }
-    }
-
-    override fun onAllDownPressed(device: Device, switchDevice: Switch) {
-        lifecycleScope.launch {
-            viewModel.publishSwitch1On(device)
-            switchDevice.isEnabled = false
-            delay(16000)
-            viewModel.publishSwitch1Off(device)
-            switchDevice.isEnabled = true
-        }
-    }
-
-
 }

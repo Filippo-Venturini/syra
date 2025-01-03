@@ -3,21 +3,15 @@ package com.example.syra.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.Button
 import android.widget.ImageButton
-import android.widget.Switch
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import com.example.syra.DeviceActionListener
 import com.example.syra.R
 import com.example.syra.model.Device
-import com.example.syra.utils.Constants.SWITCH_0_OFF
-import com.example.syra.utils.Constants.SWITCH_0_ON
-import com.example.syra.utils.Constants.TOPIC
 
 class CardAdapter (
     private val context: Context,
@@ -38,49 +32,21 @@ class CardAdapter (
         val name = view.findViewById<TextView>(R.id.deviceName)
         val btnUp = view.findViewById<ImageButton>(R.id.btnUp)
         val btnDown = view.findViewById<ImageButton>(R.id.btnDown)
-        val switchDevice = view.findViewById<Switch>(R.id.switchDevice)
+        val btnStop = view.findViewById<ImageButton>(R.id.btnStop)
         val card = view.findViewById<CardView>(R.id.cardView)
 
         name.text = device.name
 
-        btnUp.setOnTouchListener { _, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    deviceActionListener.onUpPressed(device)
-                    true
-                }
-
-                MotionEvent.ACTION_UP -> {
-                    deviceActionListener.onUpReleased(device)
-                    true
-                }
-
-                else -> false
-            }
+        btnUp.setOnClickListener { _ ->
+            deviceActionListener.onUpPressed(device)
         }
 
-        btnDown.setOnTouchListener { _, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    deviceActionListener.onDownPressed(device)
-                    true
-                }
-
-                MotionEvent.ACTION_UP -> {
-                    deviceActionListener.onDownReleased(device)
-                    true
-                }
-
-                else -> false
-            }
+        btnDown.setOnClickListener { _ ->
+            deviceActionListener.onDownPressed(device)
         }
 
-        switchDevice.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                deviceActionListener.onAllDownPressed(device, switchDevice)
-            } else {
-                deviceActionListener.onAllUpPressed(device, switchDevice)
-            }
+        btnStop.setOnClickListener{ _ ->
+            deviceActionListener.onStopPressed(device)
         }
 
         return view
